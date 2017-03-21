@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    .clock{
+        width: 400px;height: 400px;border: 5px solid #aaa;
+        box-shadow: 0 0 10px #000;
+        margin: 50px auto;
+        position: fixed;
+        top:0;bottom: 0;
+        left:0;right: 0;
+        border-radius: 50%;
+    }
+</style>
+<script>
+//    1.相对于自己的位置去变换
+
+    window.onload=function () {
+        var clock=document.querySelector(".clock");
+//        console.log(clock)
+        function createMark() {
+            var widths,heights;
+            for(var i=0;i<60;i++){
+                if(i%5===0){
+                    widths=6;
+                    heights=12;
+                }else {
+                    widths=3;
+                    heights=6;
+                }
+                var div=document.createElement("div");
+                div.style.cssText="width:"+widths+"px;height:"+heights+"px;position:absolute;left:197px;top:0;background:#000";
+                div.style.transformOrigin="center 200px";
+                div.style.transform="rotate("+i*6+"deg)";
+                clock.appendChild(div);
+            }
+        }
+        createMark();
+
+        var times=new Date();
+        var hours=times.getHours();
+        var min=times.getMinutes();
+        var sec=times.getSeconds();
+        var h=creatPointer(10,80,"#000",hours*30+min*6/12);
+        var m=creatPointer(6,110,"#000",min*6);
+        var s=creatPointer(4,140,"#000",sec*6);
+        setInterval(function () {
+            var times=new Date();
+            var hours=times.getHours();
+            console.log(hours)
+
+            var min=times.getMinutes();
+            console.log(min)
+            var sec=times.getSeconds();
+            h.style.transform="rotate("+(hours*30+min*6/12)+"deg)"
+            m.style.transform="rotate("+min*6+"deg)";
+            s.style.transform="rotate("+sec*6+"deg)"
+        },1000)
+
+        function creatPointer(w,h,c,a) {
+            var div=document.createElement("div");
+            var lefts=(400-w)/2;
+            var tops=(400/2)-h;
+            div.style.cssText="width:"+w+"px;height:"+h+"px;background:"+c+";position:absolute;left:"+lefts+"px;top:"+tops+"px;border-radius: 5%;";
+            div.style.transformOrigin="center bottom";
+            div.style.transform="rotate("+a+"deg)";
+            clock.appendChild(div);
+            return div;
+        }
+
+    }
+
+</script>
+<body>
+<div class="clock"></div>
+
+</body>
+</html>
